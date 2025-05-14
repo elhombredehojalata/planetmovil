@@ -17,8 +17,8 @@
              class="w-full sm:w-2/3 p-3 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
       
       <label class="flex items-center gap-2 text-sm sm:text-base">
-        <input type="checkbox" id="stockOnly" class="w-4 h-4" />
-        Mostrar solo productos en stock
+        <input type="checkbox" id="showAll" class="w-4 h-4" />
+        Mostrar todos los equipos registrados (vendidos y traspasados)
       </label>
     </div>
 
@@ -44,13 +44,11 @@
 
         fullData = response.getDataTable();
 
-        // Determinar qué columnas mostrar
+        // Determinar columnas visibles (excluir A, L y "comentario adicional")
         visibleIndexes = [];
         for (let i = 0; i < fullData.getNumberOfColumns(); i++) {
           const label = fullData.getColumnLabel(i).trim().toLowerCase();
-          if (i === 0 || i === 11 || label.includes("comentario adicional")) {
-            continue; // Ocultar columna A, L y "Comentario adicional"
-          }
+          if (i === 0 || i === 11 || label.includes("comentario adicional")) continue;
           visibleIndexes.push(i);
         }
 
@@ -58,13 +56,13 @@
 
         // Eventos
         document.getElementById("searchBox").addEventListener("input", renderFilteredTable);
-        document.getElementById("stockOnly").addEventListener("change", renderFilteredTable);
+        document.getElementById("showAll").addEventListener("change", renderFilteredTable);
       });
     }
 
     function renderFilteredTable() {
       const searchTerm = document.getElementById("searchBox").value.toLowerCase();
-      const stockOnly = document.getElementById("stockOnly").checked;
+      const showAll = document.getElementById("showAll").checked;
 
       const filtered = new google.visualization.DataTable();
 
@@ -74,10 +72,9 @@
       }
 
       for (let i = 0; i < fullData.getNumberOfRows(); i++) {
-        const stockValue = fullData.getValue(i, 12); // Columna M (stock)
-        if (stockOnly && stockValue != "1" && stockValue != 1) {
-          continue;
-        }
+        const stockValue = fullData.getValue(i, 12); // Columna M
+
+        if (!showAll && stockValue != "1" && stockValue != 1) continue;
 
         let include = !searchTerm;
         let row = [];
