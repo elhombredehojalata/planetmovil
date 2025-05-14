@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hola, Jaime. ¿Qué deseas buscar?</title>
+  <title>Stock Planet Movil</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -16,45 +16,44 @@
       margin-top: 0.25rem;
     }
 
-    /* Estilo tabla con letra más grande y colores planos */
+    /* Estilo tabla sin degradado, fondo blanco y encabezado azul plano */
     .google-visualization-table-table {
       width: 100%;
       border-collapse: separate !important;
       border-spacing: 0 8px !important;
-      font-size: 1.25rem; /* letra más grande */
+      font-size: 1.3rem; /* tamaño de letra más grande */
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .google-visualization-table-th {
       background-color: #2563eb !important; /* azul plano */
       color: white !important;
-      font-weight: 700;
+      font-weight: bold;
       text-align: center !important;
-      padding: 14px 12px !important;
+      padding: 16px 12px !important;
       border-radius: 6px 6px 0 0 !important;
-      user-select: none;
     }
 
     .google-visualization-table-td {
-      background-color: #f9fafb !important; /* gris muy claro */
-      padding: 14px 12px !important;
+      background-color: #ffffff !important;
+      padding: 16px 12px !important;
       border-radius: 6px;
-      color: #111827; /* texto oscuro */
+      color: #1f2937; /* gris oscuro */
       vertical-align: middle !important;
     }
 
     tr.google-visualization-table-tr:hover td {
-      background-color: #e0e7ff !important; /* azul claro al pasar mouse */
+      background-color: #e0e7ff !important;
     }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
   <div class="max-w-7xl mx-auto px-4 py-6">
-    <h1 class="text-5xl font-extrabold text-center mb-8">📱Hola, Jaime. ¿Qué deseas buscar?</h1>
+    <h1 class="text-5xl font-extrabold text-center mb-3 text-blue-700">📦 STOCK PLANET MOVIL</h1>
 
     <!-- Buscador y checkbox -->
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <input id="searchBox" type="text" placeholder="🔍 Buscar modelo, marca, precio..."
+      <input id="searchBox" type="text" placeholder="🔍 Hola Jaime, ¿qué deseas buscar?"
              class="w-full sm:w-2/3 px-5 py-4 rounded-md border border-gray-300 shadow-md text-2xl focus:outline-none focus:ring-2 focus:ring-blue-600"/>
 
       <label class="flex items-center gap-3 text-xl font-semibold">
