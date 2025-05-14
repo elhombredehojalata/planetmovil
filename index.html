@@ -16,32 +16,33 @@
       margin-top: 0.25rem;
     }
 
-    /* Estilo tabla SIN degradado, fondo blanco, encabezado azul plano */
+    /* Estilo moderno y definido para la tabla */
     .google-visualization-table-table {
       width: 100%;
       font-size: 1.3rem;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       border-collapse: collapse !important;
+      border: 1px solid #d1d5db !important;
     }
 
     .google-visualization-table-th {
-      background-color: #2563eb !important; /* azul plano */
-      color: white !important;
-      font-weight: bold;
+      background-color: #f3f4f6 !important; /* gris claro, sin azul */
+      color: #111827 !important; /* texto oscuro */
+      font-weight: 600;
       text-align: center !important;
       padding: 12px !important;
-      border: none !important;
+      border: 1px solid #d1d5db !important;
     }
 
     .google-visualization-table-td {
       background-color: #ffffff !important;
       padding: 12px !important;
       color: #1f2937 !important;
-      border: none !important;
+      border: 1px solid #e5e7eb !important;
     }
 
     tr.google-visualization-table-tr:hover td {
-      background-color: #e0e7ff !important;
+      background-color: #f9fafb !important;
     }
   </style>
 </head>
@@ -52,7 +53,7 @@
     <!-- Buscador y checkbox -->
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <input id="searchBox" type="text" placeholder="🔍 Hola Jaime, ¿qué deseas buscar?"
-             class="w-full sm:w-2/3 px-5 py-4 rounded-md border border-gray-300 shadow-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-600"/>
+             class="w-full sm:w-2/3 px-5 py-4 rounded-md border border-gray-300 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600"/>
 
       <label class="flex items-center gap-3 text-xl font-semibold">
         <input type="checkbox" id="showAll" class="w-6 h-6" />
