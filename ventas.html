@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ventas - JAIME'S TIENDA</title>
+  <title>Ventas - Planet Movil</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -15,56 +15,114 @@
       font-size: 0.875rem;
       margin-top: 0.25rem;
     }
+
+    .google-visualization-table-table {
+      width: 100%;
+      font-size: 1.2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      border-collapse: collapse !important;
+      border: 1px solid #d1d5db !important;
+    }
+
+    .google-visualization-table-th {
+      background-color: #f3f4f6 !important;
+      color: #111827 !important;
+      font-weight: 600;
+      text-align: center !important;
+      padding: 12px !important;
+      border: 1px solid #d1d5db !important;
+    }
+
+    .google-visualization-table-td {
+      background-color: #ffffff !important;
+      padding: 12px !important;
+      color: #1f2937 !important;
+      border: 1px solid #e5e7eb !important;
+    }
+
+    tr.google-visualization-table-tr:hover td {
+      background-color: #f9fafb !important;
+    }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 text-lg">
+<body class="bg-gray-100 text-gray-800">
   <div class="max-w-7xl mx-auto px-4 py-6">
-    <h1 class="text-4xl font-bold text-center mb-2">📋 VENTAS - PLANET MOVIL</h1>
-    <p class="text-center text-xl mb-6">Historial de ventas registradas</p>
+    <h1 class="text-4xl font-extrabold text-center mb-4 text-green-700">📊 REGISTRO DE VENTAS</h1>
 
-    <!-- Botón volver -->
-    <div class="mb-6 text-center">
-      <a href="index.html">
-        <button class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-md">
-          ⬅ Volver a Inicio
-        </button>
-      </a>
+    <!-- Buscador -->
+    <div class="mb-6">
+      <input id="searchBox" type="text" placeholder="🔍 Buscar en registros de ventas"
+             class="w-full px-5 py-4 rounded-md border border-gray-300 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-green-600"/>
     </div>
 
-    <!-- Mensaje de deslizar -->
-    <div class="scroll-hint mb-2 text-center"></div>
+    <div class="scroll-hint mb-3 text-center"></div>
 
-    <div id="table_div" class="bg-white p-4 rounded-md shadow-md overflow-x-auto"></div>
+    <div id="ventas_table" class="bg-white p-5 rounded-lg shadow-lg overflow-x-auto"></div>
   </div>
 
   <script>
     google.charts.load('current', {'packages':['table']});
-    google.charts.setOnLoadCallback(drawTable);
+    google.charts.setOnLoadCallback(drawVentasTable);
 
-    function drawTable() {
+    let fullData;
+    let visibleIndexes = [];
+
+    function drawVentasTable() {
       const sheetID = '1-g3R-CVXtXNDEpwsspwrqxTtOrPAi8xgGgmHo1rwioI';
       const gid = '1143517756';
       const query = new google.visualization.Query(`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?gid=${gid}`);
       query.send(function(response) {
         if (response.isError()) {
-          document.getElementById("table_div").innerHTML = "<p class='text-red-600'>Error cargando datos.</p>";
+          document.getElementById("ventas_table").innerHTML = "<p class='text-red-600 text-xl'>Error cargando datos.</p>";
           return;
         }
 
-        const data = response.getDataTable();
-        const table = new google.visualization.Table(document.getElementById('table_div'));
-        table.draw(data, {
-          showRowNumber: false,
-          width: '100%',
-          height: '100%',
-          allowHtml: true,
-          cssClassNames: {
-            headerRow: 'bg-gray-100 text-gray-800 font-bold text-lg border border-gray-300',
-            tableCell: 'border border-gray-200 text-xl px-2 py-2'
+        fullData = response.getDataTable();
+
+        // Mostrar todas las columnas
+        visibleIndexes = [];
+        for (let i = 0; i < fullData.getNumberOfColumns(); i++) {
+          visibleIndexes.push(i);
+        }
+
+        renderVentasTable();
+
+        document.getElementById("searchBox").addEventListener("input", renderVentasTable);
+      });
+    }
+
+    function renderVentasTable() {
+      const searchTerm = document.getElementById("searchBox").value.toLowerCase();
+      const filtered = new google.visualization.DataTable();
+
+      for (let i of visibleIndexes) {
+        filtered.addColumn(fullData.getColumnType(i), fullData.getColumnLabel(i));
+      }
+
+      for (let i = 0; i < fullData.getNumberOfRows(); i++) {
+        let include = !searchTerm;
+        let row = [];
+
+        for (let col of visibleIndexes) {
+          const cell = fullData.getValue(i, col);
+          row.push(cell);
+          if (cell && cell.toString().toLowerCase().includes(searchTerm)) {
+            include = true;
           }
-        });
+        }
+
+        if (include) filtered.addRow(row);
+      }
+
+      const table = new google.visualization.Table(document.getElementById('ventas_table'));
+      table.draw(filtered, {
+        showRowNumber: false,
+        width: '100%',
+        height: '100%',
+        allowHtml: true
       });
     }
   </script>
 </body>
 </html>
+
