@@ -85,35 +85,32 @@
 
         fullData = response.getDataTable();
 
-        // Ocultar columnas A (0) y C (2)
+        // Definir qué columnas ocultar: A (0), C (2)
         visibleIndexes = [];
         for (let i = 0; i < fullData.getNumberOfColumns(); i++) {
           if (i !== 0 && i !== 2) visibleIndexes.push(i);
         }
 
-        // Obtener y ordenar filas por columna B (índice 1, fecha) — formato dd/mm/yyyy
-        const sortedRows = [];
-        for (let i = 0; i < fullData.getNumberOfRows(); i++) {
-          sortedRows.push(i);
-        }
+        const rows = Array.from({ length: fullData.getNumberOfRows() }, (_, i) => i);
 
-        sortedRows.sort((a, b) => {
+        // Ordenar por columna B (índice 1 - fecha)
+        rows.sort((a, b) => {
           const dateA = parseDate(fullData.getValue(a, 1));
           const dateB = parseDate(fullData.getValue(b, 1));
           return dateB - dateA;
         });
 
-        renderVentasTable(sortedRows);
+        renderVentasTable(rows);
 
-        document.getElementById("searchBox").addEventListener("input", () => renderVentasTable(sortedRows));
+        document.getElementById("searchBox").addEventListener("input", () => renderVentasTable(rows));
       });
     }
 
     function parseDate(dateStr) {
-      if (!dateStr) return new Date(0); // fecha muy antigua si está vacío
-      const parts = dateStr.split('/');
+      if (!dateStr || typeof dateStr !== "string") return new Date(0);
+      const parts = dateStr.trim().split("/");
       if (parts.length !== 3) return new Date(0);
-      const [day, month, year] = parts.map(Number);
+      const [day, month, year] = parts.map(p => parseInt(p, 10));
       return new Date(year, month - 1, day);
     }
 
