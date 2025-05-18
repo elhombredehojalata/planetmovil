@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Stock Planet Movil</title>
+  <title>STOCK PLANET MOVIL</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -15,46 +15,17 @@
       font-size: 0.875rem;
       margin-top: 0.25rem;
     }
-
-    /* Estilo moderno y definido para la tabla */
-    .google-visualization-table-table {
-      width: 100%;
-      font-size: 1.3rem;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      border-collapse: collapse !important;
-      border: 1px solid #d1d5db !important;
-    }
-
-    .google-visualization-table-th {
-      background-color: #f3f4f6 !important; /* gris claro, sin azul */
-      color: #111827 !important; /* texto oscuro */
-      font-weight: 600;
-      text-align: center !important;
-      padding: 12px !important;
-      border: 1px solid #d1d5db !important;
-    }
-
-    .google-visualization-table-td {
-      background-color: #ffffff !important;
-      padding: 12px !important;
-      color: #1f2937 !important;
-      border: 1px solid #e5e7eb !important;
-    }
-
-    tr.google-visualization-table-tr:hover td {
-      background-color: #f9fafb !important;
-    }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 text-gray-800 text-lg">
   <div class="max-w-7xl mx-auto px-4 py-6">
-    <h1 class="text-5xl font-extrabold text-center mb-3 text-blue-700">📦 STOCK PLANET MOVIL</h1>
+    <h1 class="text-4xl font-bold text-center mb-2 text-blue-700">📦 STOCK PLANET MOVIL</h1>
 
     <!-- Botón VER VENTAS -->
-    <div class="flex justify-end mb-4">
+    <div class="flex justify-end mb-6">
       <a href="ventas.html">
-        <button class="bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-5 py-2 rounded-md shadow-md transition">
-          📊 VER VENTAS
+        <button class="bg-green-600 hover:bg-green-700 text-white text-lg font-bold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+          📋 VER VENTAS ➡️
         </button>
       </a>
     </div>
@@ -64,8 +35,8 @@
       <input id="searchBox" type="text" placeholder="🔍 Hola Jaime, ¿qué deseas buscar?"
              class="w-full sm:w-2/3 px-5 py-4 rounded-md border border-gray-300 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600"/>
 
-      <label class="flex items-center gap-3 text-xl font-semibold">
-        <input type="checkbox" id="showAll" class="w-6 h-6" />
+      <label class="flex items-center gap-3 text-lg font-medium">
+        <input type="checkbox" id="showAll" class="w-5 h-5" />
         Mostrar todos los equipos registrados (vendidos y traspasados)
       </label>
     </div>
@@ -73,7 +44,7 @@
     <!-- Mensaje de deslizar -->
     <div class="scroll-hint mb-3 text-center"></div>
 
-    <div id="table_div" class="bg-white p-5 rounded-lg shadow-lg overflow-x-auto"></div>
+    <div id="table_div" class="bg-white p-4 rounded-md shadow-md overflow-x-auto"></div>
   </div>
 
   <script>
@@ -89,13 +60,13 @@
       const query = new google.visualization.Query(`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?gid=${gid}`);
       query.send(function(response) {
         if (response.isError()) {
-          document.getElementById("table_div").innerHTML = "<p class='text-red-600 text-xl'>Error cargando datos.</p>";
+          document.getElementById("table_div").innerHTML = "<p class='text-red-600'>Error cargando datos.</p>";
           return;
         }
 
         fullData = response.getDataTable();
 
-        // Determinar columnas visibles (excluir A, L, M, N y "comentario adicional")
+        // Determinar columnas visibles (excluir A, L, M, N y comentario adicional)
         visibleIndexes = [];
         for (let i = 0; i < fullData.getNumberOfColumns(); i++) {
           const label = fullData.getColumnLabel(i).trim().toLowerCase();
@@ -116,12 +87,13 @@
 
       const filtered = new google.visualization.DataTable();
 
+      // Agregar columnas visibles
       for (let i of visibleIndexes) {
         filtered.addColumn(fullData.getColumnType(i), fullData.getColumnLabel(i));
       }
 
       for (let i = 0; i < fullData.getNumberOfRows(); i++) {
-        const stockValue = fullData.getValue(i, 12); // M (stock)
+        const stockValue = fullData.getValue(i, 12); // M
 
         if (!showAll && stockValue != "1" && stockValue != 1) continue;
 
@@ -144,7 +116,11 @@
         showRowNumber: false,
         width: '100%',
         height: '100%',
-        allowHtml: true
+        allowHtml: true,
+        cssClassNames: {
+          headerRow: 'bg-gray-100 text-gray-800 font-bold text-lg border border-gray-300',
+          tableCell: 'border border-gray-200 text-xl px-2 py-2'
+        }
       });
     }
   </script>
